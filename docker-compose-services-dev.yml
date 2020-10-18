@@ -1,0 +1,29 @@
+version: "3.4"
+services:
+
+  postgres:
+    image: postgres:10.6
+    container_name: docker-demo-postgres-dev
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    # volumes:
+    #   - ../postgresql/data-dev:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  pgadmin:
+    image: dpage/pgadmin4:4.25
+    container_name: docker-demo-pgadmin-dev
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=postgres
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    ports:
+      - "5480:80"
+
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: docker-demo-activemq-dev
+    ports:
+      - "61616:61616"
+      - "8161:8161"

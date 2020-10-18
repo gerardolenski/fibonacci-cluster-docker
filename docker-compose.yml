@@ -1,0 +1,70 @@
+version: "3.4"
+services: 
+  
+  front-app:
+    image: gol/docker-demo-front:1.0
+    container_name: docker-demo-front
+    build: 
+      dockerfile: Dockerfile
+      context: ../front-app/
+    ports: 
+      - "8080:80"
+    
+  task-manager:
+    image: gol/task-manager:1.0
+    container_name: docker-demo-task-manager
+    build:
+      dockerfile: Dockerfile
+      context: ../task-manager/
+    environment: 
+        - WORKER_QUEUE_NAME=worker
+        - BROKER_URL=failover:(tcp://activemq:61616)?jms.useAsyncSend=true&initialReconnectDelay=1000
+        - BROKER_USER=admin
+        - BROKER_PASSWORD=admin
+        - POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgres:5432/task_manager
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRESS_POOL_SIZE=10
+        - POSTGRESS_CONNECTION_TIMEOUT=10000
+        - LOGGING_LEVEL=debug
+        - JVM_OPTS=-Xms1g -Xmx1g
+    depends_on: 
+      - postgres
+      - activemq
+
+  fibworker:
+    image: gol/fibworker:1.0
+    container_name: docker-demo-fibworker
+    build:
+      dockerfile: Dockerfile
+      context: ../fibworker/
+    environment: 
+      - WORKER_QUEUE_NAME=worker
+      - WORKER_CONCURRENCY=1-1
+      - BROKER_URL=failover:(tcp://activemq:61616)?jms.useAsyncSend=true&initialReconnectDelay=1000
+      - BROKER_USER=admin
+      - BROKER_PASSWORD=admin
+      - LOGGING_LEVEL=debug
+      - JVM_OPTS=-Xms512m -Xmx512m
+    
+  postgres:
+    image: postgres:10.6
+    container_name: docker-demo-postgres
+    environment:
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_USER=postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:4.25
+    container_name: docker-demo-pgadmin
+    environment:
+        - PGADMIN_DEFAULT_EMAIL=postgres
+        - PGADMIN_DEFAULT_PASSWORD=postgres
+    ports:
+        - "8081:80"
+
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: docker-demo-activemq
+    ports:
+        - "8082:8161"
