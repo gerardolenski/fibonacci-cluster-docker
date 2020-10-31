@@ -17,17 +17,18 @@ services:
       dockerfile: Dockerfile
       context: ../task-manager/
     environment: 
-        - WORKER_QUEUE_NAME=worker
-        - BROKER_URL=failover:(tcp://activemq:61616)?jms.useAsyncSend=true&initialReconnectDelay=1000
-        - BROKER_USER=admin
-        - BROKER_PASSWORD=admin
-        - POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgres:5432/task_manager
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-        - POSTGRESS_POOL_SIZE=10
-        - POSTGRESS_CONNECTION_TIMEOUT=10000
-        - LOGGING_LEVEL=debug
-        - JVM_OPTS=-Xms1g -Xmx1g
+      - WORKER_QUEUE_NAME=worker
+      - RESULT_LISTENER_CONCURRENCY=1-2
+      - BROKER_URL=failover:(tcp://activemq:61616)?jms.useAsyncSend=true&initialReconnectDelay=1000
+      - BROKER_USER=admin
+      - BROKER_PASSWORD=admin
+      - POSTGRES_DATASOURCE_URL=jdbc:postgresql://postgres:5432/task_manager
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRESS_POOL_SIZE=3
+      - POSTGRESS_CONNECTION_TIMEOUT=10000
+      - LOGGING_LEVEL=debug
+      - JVM_OPTS=-Xms512m -Xmx512m
     depends_on: 
       - postgres
       - activemq
@@ -45,7 +46,7 @@ services:
       - BROKER_USER=admin
       - BROKER_PASSWORD=admin
       - LOGGING_LEVEL=debug
-      - JVM_OPTS=-Xms512m -Xmx512m
+      - JVM_OPTS=-Xms256m -Xmx256m
     
   postgres:
     image: postgres:10.6
