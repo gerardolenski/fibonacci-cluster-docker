@@ -9,6 +9,8 @@ services:
       context: ../front-app/
     ports: 
       - "8080:80"
+    depends_on: 
+      - task-manager
     
   task-manager:
     image: gol/task-manager:1.0
@@ -35,7 +37,7 @@ services:
 
   fibworker:
     image: gol/fibworker:1.0
-    container_name: docker-demo-fibworker
+    # container_name: docker-demo-fibworker
     build:
       dockerfile: Dockerfile
       context: ../fibworker/
