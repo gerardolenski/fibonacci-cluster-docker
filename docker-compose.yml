@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
       context: ../front-app/
     ports: 
-      - "8080:80"
+      - "8180:80"
     depends_on: 
       - task-manager
     
@@ -49,10 +49,10 @@ services:
         - PGADMIN_DEFAULT_EMAIL=postgres
         - PGADMIN_DEFAULT_PASSWORD=postgres
     ports:
-        - "8081:80"
+        - "8181:80"
 
   activemq:
     image: rmohr/activemq:latest
     container_name: docker-demo-activemq
     ports:
-        - "8082:8161"
+        - "8182:8161"
