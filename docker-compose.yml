@@ -31,7 +31,7 @@ services:
     # container_name: docker-demo-fibworker
     build:
       dockerfile: Dockerfile
-      context: ../fibworker/
+      context: ../fib-worker/
     env_file: 
       - env/fib-worker.env
       - env/broker.env
