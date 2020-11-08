@@ -3,18 +3,18 @@ services:
 
   postgres:
     image: postgres:10.6
-    container_name: docker-demo-postgres-dev
+    container_name: fibonacci-postgres
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-    # volumes:
-    #   - ../postgresql/data-dev:/var/lib/postgresql/data
+    volumes:
+      - ../storage/postgresql/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   
   pgadmin:
     image: dpage/pgadmin4:4.25
-    container_name: docker-demo-pgadmin-dev
+    container_name: fibonacci-pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=postgres
       - PGADMIN_DEFAULT_PASSWORD=postgres
@@ -23,7 +23,7 @@ services:
 
   activemq:
     image: rmohr/activemq:latest
-    container_name: docker-demo-activemq-dev
+    container_name: fibonacci-activemqs
     ports:
       - "61616:61616"
       - "8161:8161"

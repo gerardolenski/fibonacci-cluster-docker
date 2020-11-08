@@ -3,7 +3,7 @@ services:
   
   front-app:
     image: gol/docker-demo-front:1.0
-    container_name: docker-demo-front
+    container_name: fibonacci-front
     build: 
       dockerfile: Dockerfile
       context: ../front-app/
@@ -14,7 +14,7 @@ services:
     
   task-manager:
     image: gol/task-manager:1.0
-    container_name: docker-demo-task-manager
+    container_name: fibonacci-task-manager
     build:
       dockerfile: Dockerfile
       context: ../task-manager/
@@ -28,7 +28,7 @@ services:
 
   fibworker:
     image: gol/fibworker:1.0
-    # container_name: docker-demo-fibworker
+    # container_name: fibonacci-fibworker
     build:
       dockerfile: Dockerfile
       context: ../fib-worker/
@@ -38,13 +38,15 @@ services:
     
   postgres:
     image: postgres:10.6
-    container_name: docker-demo-postgres
+    container_name: fibonacci-postgres
+    volumes:
+      - ../storage/postgresql/data:/var/lib/postgresql/data
     env_file: 
         - env/postgres.env
 
   pgadmin:
     image: dpage/pgadmin4:4.25
-    container_name: docker-demo-pgadmin
+    container_name: fibonacci-pgadmin
     environment:
         - PGADMIN_DEFAULT_EMAIL=postgres
         - PGADMIN_DEFAULT_PASSWORD=postgres
@@ -53,6 +55,6 @@ services:
 
   activemq:
     image: rmohr/activemq:latest
-    container_name: docker-demo-activemq
+    container_name: fibonacci-activemq
     ports:
         - "8182:8161"
