@@ -17,7 +17,7 @@ docker-compose -f docker-compose-services.yml down
 The persistent data will be stored locally in `../storage/` directory
 
 
-## Ro run the application
+## To run the application
 `docker-compose up -d` then browse http://localhost:8180 and enjoy ;)
 
 ## To scale fib-workers
