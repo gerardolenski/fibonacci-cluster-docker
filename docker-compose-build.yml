@@ -4,6 +4,9 @@ services:
   front-app:
     image: golenski/fibonacci-front:1.0
     container_name: fibonacci-front
+    build: 
+      dockerfile: Dockerfile
+      context: ../front-app/
     ports: 
       - "8180:80"
     depends_on: 
@@ -12,6 +15,9 @@ services:
   task-manager:
     image: golenski/fibonacci-task-manager:1.0
     container_name: fibonacci-task-manager
+    build:
+      dockerfile: Dockerfile
+      context: ../task-manager/
     env_file: 
       - env/task-manager.env
       - env/postgres.env
@@ -23,6 +29,9 @@ services:
   fibworker:
     image: golenski/fibonacci-worker:1.0
     # container_name: fibonacci-fibworker
+    build:
+      dockerfile: Dockerfile
+      context: ../fib-worker/
     env_file: 
       - env/fib-worker.env
       - env/broker.env

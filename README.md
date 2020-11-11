@@ -1,7 +1,7 @@
 # Dockerized FIBONACCI app
 ![](fibonacci-flow.png)
 
-## Setting database before run the application
+## Setting database before running the application
 1. Run services
 ```
 docker-compose -f docker-compose-services.yml up -d
@@ -17,10 +17,15 @@ docker-compose -f docker-compose-services.yml down
 The persistent data will be stored locally in `../storage/` directory
 
 
-## Run the application
+## Ro run the application
 `docker-compose up -d` then browse http://localhost:8180 and enjoy ;)
 
 ## To scale fib-workers
 ```
 docker-compose up -d --scale fibworker={number-of-instances}
+```
+
+## To build all services
+```
+docker-compose -f docker-compose-build.yml build
 ```
