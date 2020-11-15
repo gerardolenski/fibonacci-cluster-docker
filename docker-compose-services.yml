@@ -22,7 +22,7 @@ services:
       - "5480:80"
 
   activemq:
-    image: rmohr/activemq:latest
+    image: rmohr/activemq:5.15.9
     container_name: fibonacci-activemqs
     ports:
       - "61616:61616"

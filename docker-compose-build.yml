@@ -1,16 +1,24 @@
 version: "3.4"
 services: 
   
+  nginx:
+    image: golenski/fibonacci-nginx:1.0
+    container_name: fibonacci-nginx
+    build: 
+      dockerfile: Dockerfile
+      context: ./nginx/
+    ports: 
+      - "8180:80"
+    depends_on: 
+      - front-app
+      - task-manager
+
   front-app:
-    image: golenski/fibonacci-front:1.0
+    image: golenski/fibonacci-front:1.1
     container_name: fibonacci-front
     build: 
       dockerfile: Dockerfile
       context: ../front-app/
-    ports: 
-      - "8180:80"
-    depends_on: 
-      - task-manager
     
   task-manager:
     image: golenski/fibonacci-task-manager:1.0
@@ -54,7 +62,7 @@ services:
         - "8181:80"
 
   activemq:
-    image: rmohr/activemq:latest
+    image: rmohr/activemq:5.15.9
     container_name: fibonacci-activemq
     ports:
         - "8182:8161"
