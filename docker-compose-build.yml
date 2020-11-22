@@ -21,7 +21,7 @@ services:
       context: ../front-app/
     
   task-manager:
-    image: golenski/fibonacci-task-manager:1.0
+    image: golenski/fibonacci-task-manager:1.1
     container_name: fibonacci-task-manager
     build:
       dockerfile: Dockerfile
@@ -35,7 +35,7 @@ services:
       - activemq
 
   fibworker:
-    image: golenski/fibonacci-worker:1.0
+    image: golenski/fibonacci-worker:1.1
     # container_name: fibonacci-fibworker
     build:
       dockerfile: Dockerfile
