@@ -16,7 +16,7 @@ services:
       - task-manager
     
   task-manager:
-    image: golenski/fibonacci-task-manager:1.1
+    image: golenski/fibonacci-task-manager:1.2.0
     container_name: fibonacci-task-manager
     env_file: 
       - env/task-manager.env
@@ -27,8 +27,8 @@ services:
       - activemq
 
   fibworker:
-    image: golenski/fibonacci-worker:1.1
-    # container_name: fibonacci-fibworker
+    image: golenski/fibonacci-worker:1.2.0
+    container_name: fibonacci-fibworker
     env_file: 
       - env/fib-worker.env
       - env/broker.env
