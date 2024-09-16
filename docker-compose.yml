@@ -34,7 +34,7 @@ services:
       - env/broker.env
     
   postgres:
-    image: postgres:10.6
+    image: postgres:16.4
     container_name: fibonacci-postgres
     volumes:
       - ../storage/postgresql/data:/var/lib/postgresql/data
@@ -42,11 +42,10 @@ services:
         - env/postgres.env
 
   pgadmin:
-    image: dpage/pgadmin4:4.25
+    image: dpage/pgadmin4:8.4
     container_name: fibonacci-pgadmin
-    environment:
-        - PGADMIN_DEFAULT_EMAIL=postgres
-        - PGADMIN_DEFAULT_PASSWORD=postgres
+    env_file:
+        - env/pgadmin.env
     ports:
         - "8181:80"
 

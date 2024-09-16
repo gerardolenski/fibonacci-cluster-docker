@@ -1,23 +1,20 @@
-version: "3.4"
 services:
 
   postgres:
-    image: postgres:10.6
+    image: postgres:16.4
     container_name: fibonacci-postgres
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+    env_file:
+      - env/postgres.env
     volumes:
-      - ../storage/postgresql/data:/var/lib/postgresql/data
+      - ./storage/postgresql/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   
   pgadmin:
-    image: dpage/pgadmin4:4.25
+    image: dpage/pgadmin4:8.4
     container_name: fibonacci-pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=postgres
-      - PGADMIN_DEFAULT_PASSWORD=postgres
+    env_file:
+      - env/pgadmin.env
     ports:
       - "5480:80"
 
