@@ -24,3 +24,14 @@ services:
     ports:
       - "61616:61616"
       - "8161:8161"
+
+  db-init:
+    image: golenski/db-init:1.0.0
+    container_name: fibonacci-db-init
+    env_file:
+      - env/postgres.env
+    environment:
+      - POSTGRES_DB_NAME=task_manager_a
+      - POSTGRES_DB_HOST=fibonacci-postgres
+    depends_on:
+      - postgres

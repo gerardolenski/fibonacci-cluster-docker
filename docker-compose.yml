@@ -24,6 +24,7 @@ services:
     depends_on: 
       - postgres
       - artemis
+      - db-init
 
   fibworker:
     image: golenski/fibonacci-worker:1.3.0
@@ -38,7 +39,7 @@ services:
     image: postgres:16.4
     container_name: fibonacci-postgres
     volumes:
-      - ../storage/postgresql/data:/var/lib/postgresql/data
+      - ./storage/postgresql/data:/var/lib/postgresql/data
     env_file: 
         - env/postgres.env
 
@@ -55,3 +56,14 @@ services:
     container_name: fibonacci-artemis
     ports:
       - "8182:8161"
+
+  db-init:
+    image: golenski/db-init:1.0.0
+    container_name: fibonacci-db-init
+    env_file:
+      - env/postgres.env
+    environment:
+      - POSTGRES_DB_NAME=task_manager
+      - POSTGRES_DB_HOST=fibonacci-postgres
+    depends_on:
+      - postgres
