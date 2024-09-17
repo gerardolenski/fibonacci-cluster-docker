@@ -1,5 +1,4 @@
-version: "3.4"
-services: 
+services:
   
   nginx:
     image: golenski/fibonacci-nginx:1.0
@@ -16,7 +15,7 @@ services:
       - task-manager
     
   task-manager:
-    image: golenski/fibonacci-task-manager:1.2.0
+    image: golenski/fibonacci-task-manager:1.3.0
     container_name: fibonacci-task-manager
     env_file: 
       - env/task-manager.env
@@ -24,15 +23,17 @@ services:
       - env/broker.env
     depends_on: 
       - postgres
-      - activemq
+      - artemis
 
   fibworker:
-    image: golenski/fibonacci-worker:1.2.0
+    image: golenski/fibonacci-worker:1.3.0
     container_name: fibonacci-fibworker
     env_file: 
       - env/fib-worker.env
       - env/broker.env
-    
+    depends_on:
+      - artemis
+
   postgres:
     image: postgres:16.4
     container_name: fibonacci-postgres
@@ -49,8 +50,8 @@ services:
     ports:
         - "8181:80"
 
-  activemq:
-    image: rmohr/activemq:5.15.9
-    container_name: fibonacci-activemq
+  artemis:
+    image: apache/activemq-artemis:2.37.0
+    container_name: fibonacci-artemis
     ports:
-        - "8182:8161"
+      - "8182:8161"
