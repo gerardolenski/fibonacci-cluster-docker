@@ -25,6 +25,12 @@ services:
       - "61616:61616"
       - "8161:8161"
 
+  redis:
+    image: redis:7.4.1
+    container_name: fibonacci-redis
+    ports:
+      - "6379:6379"
+
   db-init:
     image: golenski/db-init:1.0.0
     container_name: fibonacci-db-init
