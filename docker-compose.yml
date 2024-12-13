@@ -9,13 +9,13 @@ services:
       - task-manager
 
   front-app:
-    image: golenski/fibonacci-front:1.1
+    image: golenski/fibonacci-front:2.0.0
     container_name: fibonacci-front
     depends_on: 
       - task-manager
     
   task-manager:
-    image: golenski/fibonacci-task-manager:1.3.0
+    image: golenski/fibonacci-task-manager:2.0.0
     container_name: fibonacci-task-manager
     env_file: 
       - env/task-manager.env
@@ -25,9 +25,29 @@ services:
       - postgres
       - artemis
       - db-init
+    deploy:
+      resources:
+        limits:
+          memory: 600M
+
+  msg-relay:
+    image: golenski/fibonacci-msg-relay:1.0.0
+    container_name: fibonacci-msg-relay
+    env_file:
+      - env/msg-relay.env
+      - env/postgres.env
+      - env/broker.env
+    depends_on:
+      - postgres
+      - artemis
+      - task-manager
+    deploy:
+      resources:
+        limits:
+          memory: 300M
 
   fibworker-1:
-    image: golenski/fibonacci-worker:1.4.0
+    image: golenski/fibonacci-worker:2.0.0
     container_name: fibonacci-fibworker-1
     env_file: 
       - env/fib-worker.env
@@ -36,9 +56,13 @@ services:
     depends_on:
       - artemis
       - redis
+    deploy:
+      resources:
+        limits:
+          memory: 300M
 
   fibworker-2:
-    image: golenski/fibonacci-worker:1.4.0
+    image: golenski/fibonacci-worker:2.0.0
     container_name: fibonacci-fibworker-2
     env_file:
       - env/fib-worker.env
@@ -47,34 +71,60 @@ services:
     depends_on:
       - artemis
       - redis
+    deploy:
+      resources:
+        limits:
+          memory: 300M
 
   postgres:
     image: postgres:16.4
     container_name: fibonacci-postgres
     volumes:
-      - ./storage/postgresql/data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     env_file: 
         - env/postgres.env
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   pgadmin:
     image: dpage/pgadmin4:8.4
     container_name: fibonacci-pgadmin
     env_file:
         - env/pgadmin.env
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     ports:
         - "8181:80"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   artemis:
     image: apache/activemq-artemis:2.37.0
     container_name: fibonacci-artemis
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
     ports:
       - "8182:8161"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   redis:
     image: redis:7.4.1
     container_name: fibonacci-redis
+    volumes:
+      - redis-data:/data
     ports:
       - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
 
   db-init:
     image: golenski/db-init:1.0.0
@@ -86,3 +136,9 @@ services:
       - POSTGRES_DB_HOST=fibonacci-postgres
     depends_on:
       - postgres
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  artemis-data:
+  redis-data:

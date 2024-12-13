@@ -8,4 +8,3 @@
 ```
 docker-compose -f docker-compose-services.yml up -d
 ```
-The persistent data will be stored locally in `./storage/` directory

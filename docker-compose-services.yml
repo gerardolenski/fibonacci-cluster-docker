@@ -6,7 +6,7 @@ services:
     env_file:
       - env/postgres.env
     volumes:
-      - ./storage/postgresql/data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   
@@ -15,12 +15,16 @@ services:
     container_name: fibonacci-pgadmin
     env_file:
       - env/pgadmin.env
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     ports:
       - "5480:80"
 
   artemis:
     image: apache/activemq-artemis:2.37.0
     container_name: fibonacci-artemis
+    volumes:
+      - artemis-data:/var/lib/artemis-instance
     ports:
       - "61616:61616"
       - "8161:8161"
@@ -28,6 +32,8 @@ services:
   redis:
     image: redis:7.4.1
     container_name: fibonacci-redis
+    volumes:
+      - redis-data:/data
     ports:
       - "6379:6379"
 
@@ -37,7 +43,15 @@ services:
     env_file:
       - env/postgres.env
     environment:
-      - POSTGRES_DB_NAME=task_manager_a
+      - POSTGRES_DB_NAME=task_manager
       - POSTGRES_DB_HOST=fibonacci-postgres
     depends_on:
       - postgres
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  artemis-data:
+  redis-data:
+
+
